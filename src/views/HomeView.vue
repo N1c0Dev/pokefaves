@@ -3,6 +3,7 @@ import { ref, reactive, onMounted } from 'vue'
 import axios from 'axios'
 
 import { debounce } from '@/utils/debounce'
+import PokemonItem from '@/components/PokemonItem.vue'
 import DetailsModal from '@/components/DetailsModal.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
@@ -12,6 +13,7 @@ const searchLoading = ref(false)
 const showErrorMessage = ref(false)
 const currentPagination = reactive({})
 const pokemonList = ref([])
+const pokemonSelected = ref({})
 const searchText = ref('')
 
 onMounted(async () => {
@@ -30,11 +32,6 @@ onMounted(async () => {
   }
 })
 
-function resetSearch() {
-  searchText.value = ''
-  handleSearch()
-}
-
 async function handleSearch() {
   searchLoading.value = true
   showErrorMessage.value = false
@@ -47,6 +44,28 @@ async function handleSearch() {
     showErrorMessage.value = true
   } finally {
       searchLoading.value = false
+  }
+}
+function resetSearch() {
+  searchText.value = ''
+  handleSearch()
+}
+async function handleSelectPokemon(details: object) {
+  console.log('Selected Pokemon:', details)
+  console.log('keys:', Object.keys(details).length)
+
+  if (Object.keys(details).length > 2) {
+    pokemonSelected.value = details
+  } else {
+    try {
+      const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
+      pokemonSelected.value = res.data
+    } catch (err) {
+      console.error(err)
+      showErrorMessage.value = true
+    } finally {
+      searchLoading.value = false
+    }
   }
 }
 
@@ -80,13 +99,16 @@ const debounceSearch = debounce(handleSearch, 500)
           v-for="(item, index) in pokemonList"
           :key="index"
         >
-          <div class="flex justify-between h-15 bg-white cursor-pointer gap-2 pl-4 pr-2">
-            <h2 class="text-[22px] font-medium capitalize self-center">{{ item.name }}</h2>
-            <img class="cursor-pointer w-11 h-11 self-center" src="@/assets/images/star-off.svg" alt="add to favourite">
-          </div>
+          <PokemonItem
+            :pokemon-details="item"
+            @select-pokemon="handleSelectPokemon"
+          />
         </div>
       </section>
-      <DetailsModal/>
+      <DetailsModal
+        :is-visible="false"
+        :pokemon-details="pokemonSelected"
+      />
     </div>
     <div class="w-1/12"/>
   </section>

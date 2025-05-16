@@ -1,7 +1,19 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+const props = defineProps<{
+  isVisible: boolean
+  pokemonDetails: object
+}>()
+
+const typeNames = computed(() => {
+  return props.pokemonDetails.types.map(item => item.type.name).join(', ')
+})
+</script>
 <template>
   <transition name="fade-modal">
     <div
-      v-if="false"
+      v-if="isVisible"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
     >
       <div class="bg-white rounded-[5px] max-w-md w-full pb-6 relative animate-fade-in">
@@ -21,19 +33,19 @@
           <div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Name:</h4>
-              <p class="self-baseline ml-1">Lorem ipsum</p>
+              <p class="self-baseline ml-1">{{ pokemonDetails.name }}</p>
             </div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Weight:</h4>
-              <p class="self-baseline ml-1">Lorem ipsum</p>
+              <p class="self-baseline ml-1">{{ pokemonDetails.weight }}</p>
             </div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Height:</h4>
-              <p class="self-baseline ml-1">Lorem ipsum</p>
+              <p class="self-baseline ml-1">{{ pokemonDetails.height }}</p>
             </div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Types:</h4>
-              <p class="self-baseline ml-1">Lorem ipsum</p>
+              <p class="self-baseline ml-1">{{ typeNames }}</p>
             </div>
           </div>
         </section>
