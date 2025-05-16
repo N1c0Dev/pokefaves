@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import DetailsModal from '@/components/DetailsModal.vue';
+
+</script>
+
 <template>
   <section>
     <input type="text" placeholder="Search" class="bg-white border p-2 w-full mb-4" />
@@ -14,6 +19,7 @@
       </div>
     </div>
   </section>
+  <DetailsModal/>
   <footer class="flex justify-center shadow-md bg-white rounded-lg p-4 gap-4">
     <button class="mt-4 bg-red-500 text-white py-2 px-4 rounded-full">All</button>
     <button class="mt-4 bg-red-500 text-white py-2 px-4 rounded-full">Favorites</button>
