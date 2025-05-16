@@ -1,0 +1,30 @@
+@import "./base.css";
+
+@theme {
+  /* fonts */
+  --font-lato: 'Lato', 'Arial', 'Helvetica', 'sans-serif';
+  --font-montserrat: 'Montserrat', 'Arial', 'Helvetica', 'sans-serif';
+  /* colors */
+  /* button */
+  --color-primary-button: #F22539;
+  --color-pressed-button: #C00E20;
+  --color-disabled-button: #BFBFBF;
+  /* text */
+  --color-primary-color: #353535;
+  --color-secondary-color: #5E5E5E;
+  /* background */
+  --color-primary-background: #F9F9F9;
+  /* unused */
+  /* #E8E8E8; */
+  /* #F5F5F5; */
+  /* #ECA539; */
+}
+
+body {
+  font-family: var(--font-lato);
+}
+
+body {
+  background-color: var(--color-primary-background);
+  color: var(--color-primary-color);
+}
