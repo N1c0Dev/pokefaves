@@ -7,7 +7,7 @@ import DetailsModal from '@/components/DetailsModal.vue';
 
 const loading = ref(false);
 const currentPagination = reactive({});
-const pokemonList = ref([]);
+const pokemonList = ref([ { "name": "bulbasaur", "url": "https://pokeapi.co/api/v2/pokemon/1/" }, { "name": "ivysaur", "url": "https://pokeapi.co/api/v2/pokemon/2/" }, { "name": "venusaur", "url": "https://pokeapi.co/api/v2/pokemon/3/" }, { "name": "charmander", "url": "https://pokeapi.co/api/v2/pokemon/4/" }, { "name": "charmeleon", "url": "https://pokeapi.co/api/v2/pokemon/5/" }, { "name": "charizard", "url": "https://pokeapi.co/api/v2/pokemon/6/" }, { "name": "squirtle", "url": "https://pokeapi.co/api/v2/pokemon/7/" }, { "name": "wartortle", "url": "https://pokeapi.co/api/v2/pokemon/8/" }, { "name": "blastoise", "url": "https://pokeapi.co/api/v2/pokemon/9/" }, { "name": "caterpie", "url": "https://pokeapi.co/api/v2/pokemon/10/" }, { "name": "metapod", "url": "https://pokeapi.co/api/v2/pokemon/11/" }, { "name": "butterfree", "url": "https://pokeapi.co/api/v2/pokemon/12/" }, { "name": "weedle", "url": "https://pokeapi.co/api/v2/pokemon/13/" }, { "name": "kakuna", "url": "https://pokeapi.co/api/v2/pokemon/14/" }, { "name": "beedrill", "url": "https://pokeapi.co/api/v2/pokemon/15/" }, { "name": "pidgey", "url": "https://pokeapi.co/api/v2/pokemon/16/" }, { "name": "pidgeotto", "url": "https://pokeapi.co/api/v2/pokemon/17/" }, { "name": "pidgeot", "url": "https://pokeapi.co/api/v2/pokemon/18/" }, { "name": "rattata", "url": "https://pokeapi.co/api/v2/pokemon/19/" }, { "name": "raticate", "url": "https://pokeapi.co/api/v2/pokemon/20/" }]);
 
 async function handleSearch(search: string) {
   console.log('search:', search.target.value);
@@ -23,29 +23,51 @@ async function handleSearch(search: string) {
   }
 }
 
+
 const debounceSearch = debounce(handleSearch, 500);
 
 </script>
 
 <template>
-  <section>
-    <input type="text" placeholder="Search" class="bg-white border p-2 w-full mb-4 font-medium" @keyup="debounceSearch"/>
-  </section>
-  <section>
-    <div
-      v-for="(item, index) in pokemonList"
-      :key="index"
-      class="grid grid-cols-1 gap-4"
-    >
-      <div class="flex justify-between bg-white p-4 border">
-        <h2 class="text-[22px] font-medium">{{ item.name }}</h2>
-        <p>lorem</p>
-      </div>
+  <section class="flex">
+    <div class="w-1/12"/>
+    <div class="w-10/12 mt-10">
+      <section class="relative mb-4 ">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+          <img src="@/assets/images/magnifier.svg" alt="">
+        </div>
+        <input
+          type="text"
+          placeholder="Search"
+          class="h-[50px] bg-white font-montserrat pl-12 w-full font-medium rounded-[5px] shadow-[0px_2px_10px_0px_#0000000A] placeholder:text-faded-color"
+          @keyup="debounceSearch"
+        />
+      </section>
+      <section class="grid grid-cols-1 gap-4 mt-10 mb-30">
+        <div
+          v-for="(item, index) in pokemonList"
+          :key="index"
+        >
+          <div class="flex justify-between h-15 bg-white cursor-pointer gap-2 pl-4 pr-2">
+            <h2 class="text-[22px] font-medium capitalize self-center">{{ item.name }}</h2>
+            <img class="cursor-pointer w-11 h-11 self-center" src="@/assets/images/star-off.svg" alt="">
+          </div>
+        </div>
+      </section>
+      <DetailsModal/>
     </div>
+    <div class="w-1/12"/>
   </section>
-  <DetailsModal/>
-  <footer class="flex justify-center shadow-md bg-white border p-4 gap-4 fixed bottom-0 left-0 right-0">
-    <button class="mt-4 bg-red-500 text-white py-2 px-4 rounded-full font-bold">All</button>
-    <button class="mt-4 bg-red-500 text-white py-2 px-4 rounded-full font-bold">Favorites</button>
+
+
+  <footer class="flex justify-center shadow-[0px_-5px_4px_0px_#0000000D]  bg-white p-4 gap-4 fixed bottom-0 left-0 right-0">
+    <button class="h-11 w-[150px] mt-4 bg-primary-button text-white rounded-full font-bold cursor-pointer flex justify-center gap-3">
+      <img class="self-center" src="@/assets/images/list-icon.svg" alt="">
+      <p class="self-center">All</p>
+    </button>
+    <button class="h-11 w-[150px] mt-4 bg-primary-button text-white rounded-full font-bold cursor-pointer flex justify-center gap-3">
+      <img class="self-center" src="@/assets/images/star-icon.svg" alt="">
+      <p class="self-center">Favourites</p>
+    </button>
   </footer>
 </template>
