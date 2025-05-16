@@ -1,10 +1,7 @@
 <script setup lang="ts">
-defineProps({
-  isVisible: {
-    type: Boolean,
-    default: false
-  }
-})
+defineProps<{
+  isVisible: boolean
+}>()
 </script>
 
 <template>

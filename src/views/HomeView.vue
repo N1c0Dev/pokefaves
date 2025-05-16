@@ -5,20 +5,24 @@ import axios from 'axios'
 import { debounce } from '@/utils/debounce'
 import DetailsModal from '@/components/DetailsModal.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
+import ErrorMessage from '@/components/ErrorMessage.vue'
 
 const mountedLoading = ref(false)
 const searchLoading = ref(false)
+const showErrorMessage = ref(false)
 const currentPagination = reactive({})
 const pokemonList = ref([])
+const searchText = ref('')
 
 onMounted(async () => {
-  try {
-    mountedLoading.value = true
+  mountedLoading.value = true
 
+  try {
     const res = await axios.get('https://pokeapi.co/api/v2/pokemon/')
     pokemonList.value = res.data.results
   } catch (err) {
     console.error(err)
+    showErrorMessage.value = true
   } finally {
     setTimeout(() => {
       mountedLoading.value = false
@@ -26,28 +30,31 @@ onMounted(async () => {
   }
 })
 
-async function handleSearch(search: string) {
-  console.log('search:', search.target.value)
+function resetSearch() {
+  searchText.value = ''
+  handleSearch()
+}
+
+async function handleSearch() {
   searchLoading.value = true
+  showErrorMessage.value = false
+
   try {
-    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search.target.value}`)
-    pokemonList.value = search.target.value == '' ? res.data.results : [res.data]
+    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchText.value}`)
+    pokemonList.value = searchText.value == '' ? res.data.results : [res.data]
   } catch (err) {
-    console.error(err);
+    console.error(err)
+    showErrorMessage.value = true
   } finally {
-    setTimeout(() => {
       searchLoading.value = false
-    }, 500)
   }
 }
 
-
 const debounceSearch = debounce(handleSearch, 500)
-
 </script>
 
 <template>
-  <LoadingScreen class="h-screen" :isVisible="mountedLoading" />
+  <LoadingScreen class="h-screen" :is-visible="mountedLoading" />
   <section v-if="!mountedLoading" class="flex">
     <div class="w-1/12"/>
     <div class="w-10/12 mt-10">
@@ -56,14 +63,19 @@ const debounceSearch = debounce(handleSearch, 500)
           <img src="@/assets/images/magnifier.svg" alt="">
         </div>
         <input
+          v-model="searchText"
           type="text"
           placeholder="Search"
           class="h-[50px] bg-white font-montserrat pl-12 w-full font-medium rounded-[5px] shadow-[0px_2px_10px_0px_#0000000A] placeholder:text-faded-color"
           @keyup="debounceSearch"
         />
       </section>
-      <LoadingScreen class="h-50" :isVisible="searchLoading" />
-      <section v-if="!searchLoading" class="grid grid-cols-1 gap-4 mt-10 mb-30">
+      <LoadingScreen class="h-50" :is-visible="searchLoading" />
+      <ErrorMessage
+        :is-visible="showErrorMessage"
+        :reset-func="resetSearch"
+      />
+      <section v-if="!searchLoading && !showErrorMessage" class="grid grid-cols-1 gap-4 mt-10 mb-30">
         <div
           v-for="(item, index) in pokemonList"
           :key="index"
