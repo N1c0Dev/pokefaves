@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
+import { mainStore } from '@/store/mainStore'
 import { debounce } from '@/utils/debounce'
 import PokemonItem from '@/components/PokemonItem.vue'
 import DetailsModal from '@/components/DetailsModal.vue'
@@ -11,7 +12,7 @@ import ErrorMessage from '@/components/ErrorMessage.vue'
 const mountedLoading = ref(false)
 const searchLoading = ref(false)
 const showErrorMessage = ref(false)
-const currentPagination = reactive({})
+const currentPagination = ref({})
 const pokemonList = ref([])
 const pokemonSelected = ref({})
 const searchText = ref('')
@@ -56,6 +57,7 @@ async function handleSelectPokemon(details: object) {
 
   if (Object.keys(details).length > 2) {
     pokemonSelected.value = details
+    mainStore.setModalVisible()
   } else {
     try {
       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
@@ -65,8 +67,13 @@ async function handleSelectPokemon(details: object) {
       showErrorMessage.value = true
     } finally {
       searchLoading.value = false
+      mainStore.setModalVisible()
     }
   }
+}
+function handleCloseModal() {
+  mainStore.setModalVisible()
+  pokemonSelected.value = {}
 }
 
 const debounceSearch = debounce(handleSearch, 500)
@@ -106,8 +113,9 @@ const debounceSearch = debounce(handleSearch, 500)
         </div>
       </section>
       <DetailsModal
-        :is-visible="false"
+        :is-visible="mainStore.modalVisble"
         :pokemon-details="pokemonSelected"
+        :close-func="handleCloseModal"
       />
     </div>
     <div class="w-1/12"/>

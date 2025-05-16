@@ -4,11 +4,17 @@ import { computed } from 'vue'
 const props = defineProps<{
   isVisible: boolean
   pokemonDetails: object
+  closeFunc: () => void
 }>()
 
 const typeNames = computed(() => {
-  return props.pokemonDetails.types.map(item => item.type.name).join(', ')
+  return props.pokemonDetails.types.map(item => item.type.name).join(',')
 })
+
+function handleShare() {
+  const valuesFormated = `${props.pokemonDetails.name},w:${props.pokemonDetails.weight},h:${props.pokemonDetails.height},t:${typeNames.value}`
+  navigator.clipboard.writeText(valuesFormated)
+}
 </script>
 <template>
   <transition name="fade-modal">
@@ -22,9 +28,10 @@ const typeNames = computed(() => {
             src="@/assets/images/close-icon.svg"
             class="absolute top-4 right-5 w-[26px] h-[26px] object-contain z-10 cursor-pointer"
             alt="close modal"
+            @click="closeFunc"
           />
           <img
-            src="@/assets/images/dummy-scuero.svg"
+            :src="pokemonDetails.sprites.other['official-artwork'].front_default || pokemonDetails.sprites.front_default"
             class="absolute top-[54%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-45 h-45 object-contain z-20"
             alt=""
           />
@@ -33,7 +40,7 @@ const typeNames = computed(() => {
           <div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Name:</h4>
-              <p class="self-baseline ml-1">{{ pokemonDetails.name }}</p>
+              <p class="self-baseline ml-1 capitalize">{{ pokemonDetails.name }}</p>
             </div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Weight:</h4>
@@ -45,13 +52,16 @@ const typeNames = computed(() => {
             </div>
             <div class="flex bg-white border-b border-primary-border text-secondary-color py-3">
               <h4 class="text-lg font-bold self-baseline">Types:</h4>
-              <p class="self-baseline ml-1">{{ typeNames }}</p>
+              <p class="self-baseline ml-1 capitalize">{{ typeNames }}</p>
             </div>
           </div>
         </section>
         <section class="px-6">
           <div class="flex justify-between mt-4">
-            <button class="self-center font-bold bg-primary-button text-white py-2 px-4 rounded-full cursor-pointer">
+            <button
+              class="self-center font-bold bg-primary-button text-white py-2 px-4 rounded-full cursor-pointer"
+              @click="handleShare"
+            >
               Share to my friends
             </button>
             <img class="cursor-pointer w-11 h-11 self-center" src="@/assets/images/star-off.svg" alt="add to favourite">
