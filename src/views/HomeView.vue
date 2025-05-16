@@ -20,7 +20,7 @@ import DetailsModal from '@/components/DetailsModal.vue';
     </div>
   </section>
   <DetailsModal/>
-  <footer class="flex justify-center shadow-md bg-white rounded-lg p-4 gap-4">
+  <footer class="flex justify-center shadow-md bg-white border p-4 gap-4 fixed bottom-0 left-0 right-0">
     <button class="mt-4 bg-red-500 text-white py-2 px-4 rounded-full font-bold">All</button>
     <button class="mt-4 bg-red-500 text-white py-2 px-4 rounded-full font-bold">Favorites</button>
   </footer>
