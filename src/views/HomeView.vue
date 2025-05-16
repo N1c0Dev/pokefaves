@@ -6,14 +6,16 @@ import { debounce } from '@/utils/debounce';
 import DetailsModal from '@/components/DetailsModal.vue';
 
 const loading = ref(false);
-const mainList = reactive({});
+const currentPagination = reactive({});
+const pokemonList = ref([]);
 
 async function handleSearch(search: string) {
   console.log('search:', search.target.value);
   loading.value = true
   try {
     const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search.target.value}`)
-    Object.assign(mainList, res)
+    pokemonList.value = search.target.value == '' ? res.data.results : [res.data];
+    console.log('pokemonList:', pokemonList.value);
   } catch (err) {
     console.error(err);
   } finally {
@@ -31,7 +33,7 @@ const debounceSearch = debounce(handleSearch, 500);
   </section>
   <section>
     <div
-      v-for="(item, index) in mainList.data.results"
+      v-for="(item, index) in pokemonList"
       :key="index"
       class="grid grid-cols-1 gap-4"
     >
