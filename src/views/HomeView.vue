@@ -1,20 +1,42 @@
 <script setup lang="ts">
+import { ref, reactive } from 'vue';
+import axios from 'axios';
+
+import { debounce } from '@/utils/debounce';
 import DetailsModal from '@/components/DetailsModal.vue';
+
+const loading = ref(false);
+const mainList = reactive({});
+
+async function handleSearch(search: string) {
+  console.log('search:', search.target.value);
+  loading.value = true
+  try {
+    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search.target.value}`)
+    Object.assign(mainList, res)
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false
+  }
+}
+
+const debounceSearch = debounce(handleSearch, 500);
 
 </script>
 
 <template>
   <section>
-    <input type="text" placeholder="Search" class="bg-white border p-2 w-full mb-4 font-medium" />
+    <input type="text" placeholder="Search" class="bg-white border p-2 w-full mb-4 font-medium" @keyup="debounceSearch"/>
   </section>
   <section>
-    <div class="grid grid-cols-1 gap-4">
+    <div
+      v-for="(item, index) in mainList.data.results"
+      :key="index"
+      class="grid grid-cols-1 gap-4"
+    >
       <div class="flex justify-between bg-white p-4 border">
-        <h2 class="text-[22px] font-medium">Pokemon 1</h2>
-        <p>lorem</p>
-      </div>
-      <div class="flex justify-between bg-white p-4 border">
-        <h2 class="text-[22px] font-medium">Pokemon 1</h2>
+        <h2 class="text-[22px] font-medium">{{ item.name }}</h2>
         <p>lorem</p>
       </div>
     </div>
