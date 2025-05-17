@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import ButtonElement from '@/components/forms/ButtonElement.vue'
+
 defineProps<{
   isVisible: boolean
   resetFunc: (event: MouseEvent) => void
@@ -35,20 +37,16 @@ defineProps<{
     >
       You look lost on your journey!
     </p>
-    <button
+    <ButtonElement
       class="
         mt-10
         text-lg
-        bg-primary-button
-        text-white
         py-[11px]
         px-5
-        rounded-full
-        cursor-pointer
       "
-      @click="resetFunc"
+      :clickFunc="resetFunc"
     >
       Go back home
-    </button>
+    </ButtonElement>
   </section>
 </template>

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import IconFavourite from '@/components/icons/IconFavourite.vue'
+import IconFavorite from '@/components/icons/IconFavorite.vue'
+import ButtonElement from '@/components/forms/ButtonElement.vue'
 
 const props = defineProps<{
   isVisible: boolean
@@ -60,13 +61,13 @@ function handleShare() {
         </section>
         <section class="px-6">
           <div class="flex justify-between mt-4">
-            <button
-              class="self-center font-bold bg-primary-button text-white py-2 px-4 rounded-full cursor-pointer"
-              @click="handleShare"
+            <ButtonElement
+              class="font-bold"
+              :clickFunc="handleShare"
             >
               Share to my friends
-            </button>
-            <IconFavourite
+            </ButtonElement>
+            <IconFavorite
               :active="false"
               class="self-center"
             />

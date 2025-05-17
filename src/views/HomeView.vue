@@ -8,10 +8,12 @@ import PokemonItem from '@/components/PokemonItem.vue'
 import DetailsModal from '@/components/DetailsModal.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
+import ButtonElement from '@/components/forms/ButtonElement.vue'
 
 const mountedLoading = ref(false)
 const searchLoading = ref(false)
 const showErrorMessage = ref(false)
+const showFavorites = ref(false)
 const currentPagination = ref({})
 const pokemonList = ref([])
 const pokemonSelected = ref({})
@@ -75,8 +77,8 @@ function handleCloseModal() {
   mainStore.setModalVisible()
   pokemonSelected.value = {}
 }
-function handleFavourite(details: object) {
-  mainStore.setFavouritePokemon(details)
+function handleFavorite(details: object) {
+  mainStore.setFavoritePokemon(details)
 }
 
 const debounceSearch = debounce(handleSearch, 500)
@@ -104,7 +106,7 @@ const debounceSearch = debounce(handleSearch, 500)
         :is-visible="showErrorMessage"
         :reset-func="resetSearch"
       />
-      <section v-if="!searchLoading && !showErrorMessage" class="grid grid-cols-1 gap-4 mt-10 mb-30">
+      <section v-if="!searchLoading && !showErrorMessage && !showFavorites" class="grid grid-cols-1 gap-4 mt-10 mb-30">
         <div
           v-for="(item, index) in pokemonList"
           :key="index"
@@ -112,7 +114,22 @@ const debounceSearch = debounce(handleSearch, 500)
           <PokemonItem
             :pokemon-details="item"
             @select-pokemon="handleSelectPokemon"
-            @add-to-favourites="handleFavourite"
+            @add-to-favorites="handleFavorite"
+          />
+        </div>
+      </section>
+      <section
+        v-if="showFavorites"
+        class="grid grid-cols-1 gap-4 mt-10 mb-30"
+      >
+        <div
+          v-for="(item, index) in mainStore.favoritePokemon"
+          :key="index"
+        >
+          <PokemonItem
+            :pokemon-details="item"
+            @select-pokemon="handleSelectPokemon"
+            @add-to-favorites="handleFavorite"
           />
         </div>
       </section>
@@ -125,13 +142,37 @@ const debounceSearch = debounce(handleSearch, 500)
     <div class="w-1/12"/>
   </section>
   <footer v-if="!mountedLoading" class="flex justify-center shadow-[0px_-5px_4px_0px_#0000000D]  bg-white p-4 gap-4 fixed bottom-0 left-0 right-0">
-    <button class="h-11 w-[150px] mt-4 bg-primary-button text-white rounded-full font-bold cursor-pointer flex justify-center gap-3">
+    <ButtonElement
+      class="
+        h-11
+        w-[150px]
+        mt-4
+        font-bold
+        flex
+        justify-center
+        gap-3
+      "
+      :is-active="!showFavorites"
+      :clickFunc="() => { showFavorites = false }"
+    >
       <img class="self-center" src="@/assets/images/list-icon.svg" alt="">
       <p class="self-center">All</p>
-    </button>
-    <button class="h-11 w-[150px] mt-4 bg-primary-button text-white rounded-full font-bold cursor-pointer flex justify-center gap-3">
+    </ButtonElement>
+    <ButtonElement
+      class="
+        h-11
+        w-[150px]
+        mt-4
+        font-bold
+        flex
+        justify-center
+        gap-3
+      "
+      :is-active="showFavorites"
+      :clickFunc="() => { showFavorites = true }"
+    >
       <img class="self-center" src="@/assets/images/star-icon.svg" alt="">
-      <p class="self-center">Favourites</p>
-    </button>
+      <p class="self-center">Favorites</p>
+    </ButtonElement>
   </footer>
 </template>
