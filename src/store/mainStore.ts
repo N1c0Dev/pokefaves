@@ -12,7 +12,11 @@ export const mainStore = reactive({
     if (index !== -1) {
       this.favoritePokemon.splice(index, 1)
     } else {
-      this.favoritePokemon.push(pokemonItem)
+      const newFavoritePokemon = {
+        ...pokemonItem,
+        isFavorite: true,
+      }
+      this.favoritePokemon.push(newFavoritePokemon)
     }
   }
 })

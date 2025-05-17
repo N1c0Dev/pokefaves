@@ -31,7 +31,7 @@ function addToFavorites() {
     <h2 class="text-[22px] font-medium capitalize self-center">{{ pokemonDetails.name }}</h2>
     <IconFavorite
       class="self-center"
-      :active="false"
+      :active="pokemonDetails.isFavorite"
       @click.stop="addToFavorites"
     />
   </div>
