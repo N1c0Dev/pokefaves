@@ -32,7 +32,7 @@ function addToFavorites() {
       v-if="isVisible"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
     >
-      <div class="bg-white rounded-[5px] max-w-md w-full pb-6 relative animate-fade-in">
+      <div class="bg-white rounded-[5px] max-w-md w-8/12 pb-6 relative animate-fade-in">
         <div class="relative w-full h-64 mb-3 bg-[url('@/assets/images/landscape.svg')] bg-cover bg-center rounded-t-[5px] overflow-hidden">
           <img
             src="@/assets/images/close-icon.svg"
