@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import IconFavourite from '@/components/icons/IconFavourite.vue'
+
 const props = defineProps<{
   isVisible: boolean
   pokemonDetails: object
@@ -64,7 +66,10 @@ function handleShare() {
             >
               Share to my friends
             </button>
-            <img class="cursor-pointer w-11 h-11 self-center" src="@/assets/images/star-off.svg" alt="add to favourite">
+            <IconFavourite
+              :active="false"
+              class="self-center"
+            />
           </div>
         </section>
       </div>

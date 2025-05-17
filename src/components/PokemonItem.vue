@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import IconFavourite from '@/components/icons/IconFavourite.vue'
+
 interface PokemonDetails {
   name: string,
   url: string,
@@ -9,11 +11,15 @@ const props =  defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'selectPokemon', details: PokemonDetails): void;
+  (e: 'selectPokemon', details: PokemonDetails): void
+  (e: 'addToFavourites', details: PokemonDetails): void
 }>()
 
 function sendDetails() {
-  emit('selectPokemon', props.pokemonDetails);
+  emit('selectPokemon', props.pokemonDetails)
+}
+function addToFavourites() {
+  emit('addToFavourites', props.pokemonDetails)
 }
 </script>
 
@@ -23,6 +29,10 @@ function sendDetails() {
     @click="sendDetails"
   >
     <h2 class="text-[22px] font-medium capitalize self-center">{{ pokemonDetails.name }}</h2>
-    <img class="cursor-pointer w-11 h-11 self-center" src="@/assets/images/star-off.svg" alt="add to favourite">
+    <IconFavourite
+      class="self-center"
+      :active="false"
+      @click.stop="addToFavourites"
+    />
   </div>
 </template>

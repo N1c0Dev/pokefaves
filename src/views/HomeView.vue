@@ -75,6 +75,9 @@ function handleCloseModal() {
   mainStore.setModalVisible()
   pokemonSelected.value = {}
 }
+function handleFavourite(details: object) {
+  mainStore.setFavouritePokemon(details)
+}
 
 const debounceSearch = debounce(handleSearch, 500)
 </script>
@@ -109,6 +112,7 @@ const debounceSearch = debounce(handleSearch, 500)
           <PokemonItem
             :pokemon-details="item"
             @select-pokemon="handleSelectPokemon"
+            @add-to-favourites="handleFavourite"
           />
         </div>
       </section>
