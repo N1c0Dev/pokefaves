@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
-
 import { mainStore } from '@/store/mainStore'
 import { debounce } from '@/utils/debounce'
+import { usePokemonList } from '@/composables/usePokemonList'
+
 import PokemonItem from '@/components/PokemonItem.vue'
 import DetailsModal from '@/components/DetailsModal.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
@@ -11,121 +10,21 @@ import ErrorMessage from '@/components/ErrorMessage.vue'
 import ButtonElement from '@/components/forms/ButtonElement.vue'
 import DotsSpinner from '@/components/icons/DotsSpinner.vue'
 
-const mountedLoading = ref(false)
-const searchLoading = ref(false)
-const showErrorMessage = ref(false)
-const showFavorites = ref(false)
-const currentPagination = ref<string | null>(null)
-const pokemonList = ref<any[]>([])
-const pokemonSelected = ref({})
-const searchText = ref('')
-const isFetchingMore = ref(false)
-
-onMounted(() => {
-  mountedLoading.value = true
-
-  const fetchInitialData = async () => {
-    try {
-      const res = await axios.get('https://pokeapi.co/api/v2/pokemon/')
-      pokemonList.value = res.data.results
-      currentPagination.value = res.data.next
-    } catch (err) {
-      console.error(err)
-      showErrorMessage.value = true
-    } finally {
-      setTimeout(() => {
-        mountedLoading.value = false
-      }, 1500)
-    }
-  }
-
-  fetchInitialData()
-
-  window.addEventListener('scroll', async () => {
-    const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300
-    if (nearBottom && !showFavorites.value && !searchText.value) {
-      await loadMorePokemon()
-    }
-  })
-})
-
-async function loadMorePokemon() {
-  if (!currentPagination.value || isFetchingMore.value) return
-
-  isFetchingMore.value = true
-
-  try {
-    const res = await axios.get(currentPagination.value)
-    pokemonList.value.push(...res.data.results)
-    currentPagination.value = res.data.next
-    updatePokemonListWithFavorites()
-  } catch (err) {
-    console.error('Error loading more Pokémon:', err)
-    showErrorMessage.value = true
-  } finally {
-    isFetchingMore.value = false
-  }
-}
-async function handleSearch() {
-  searchLoading.value = true
-  showErrorMessage.value = false
-
-  try {
-    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchText.value}`)
-    pokemonList.value = searchText.value == '' ? res.data.results : [res.data]
-    currentPagination.value = 'https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20'
-  } catch (err) {
-    console.error(err)
-    showErrorMessage.value = true
-  } finally {
-    searchLoading.value = false
-    updatePokemonListWithFavorites()
-  }
-}
-function resetSearch() {
-  searchText.value = ''
-  handleSearch()
-}
-async function handleSelectPokemon(details: object) {
-  const favoriteFlag = mainStore.favoritePokemon.some(item => item.name === details.name)
-
-  if (Object.keys(details).length > 3) {
-    pokemonSelected.value = {
-      ...details,
-      isFavorite: favoriteFlag,
-    }
-    mainStore.setModalVisible()
-  } else {
-    try {
-      const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
-      pokemonSelected.value = {
-        ...res.data,
-        isFavorite: favoriteFlag,
-      }
-    } catch (err) {
-      console.error(err)
-      showErrorMessage.value = true
-    } finally {
-      searchLoading.value = false
-      mainStore.setModalVisible()
-    }
-  }
-}
-function handleCloseModal() {
-  mainStore.setModalVisible()
-  pokemonSelected.value = {}
-}
-function handleFavorite(details: object) {
-  pokemonSelected.value.isFavorite = !pokemonSelected.value.isFavorite
-  mainStore.setFavoritePokemon(details)
-  updatePokemonListWithFavorites()
-}
-function updatePokemonListWithFavorites() {
-  pokemonList.value = pokemonList.value.map(item => {
-    const isFavorite = mainStore.favoritePokemon.some(fav => fav.name === item.name)
-    return { ...item, isFavorite }
-  })
-}
+const {
+  mountedLoading,
+  searchLoading,
+  showErrorMessage,
+  showFavorites,
+  pokemonList,
+  pokemonSelected,
+  searchText,
+  isFetchingMore,
+  handleSearch,
+  resetSearch,
+  handleSelectPokemon,
+  handleFavorite,
+  handleCloseModal,
+} = usePokemonList()
 
 const debounceSearch = debounce(handleSearch, 500)
 </script>
