@@ -6,7 +6,7 @@ export const mainStore = reactive({
   setModalVisible() {
     this.modalVisble = !this.modalVisble
   },
-  setFavoritePokemon(pokemonItem: string) {
+  setFavoritePokemon(pokemonItem: object) {
     const index = this.favoritePokemon.findIndex(element => element.name === pokemonItem.name)
 
     if (index !== -1) {
