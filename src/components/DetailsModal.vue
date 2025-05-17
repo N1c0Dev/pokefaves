@@ -10,6 +10,10 @@ const props = defineProps<{
   closeFunc: () => void
 }>()
 
+const emit = defineEmits<{
+  (e: 'addToFavorites', details: PokemonDetails): void
+}>()
+
 const typeNames = computed(() => {
   return props.pokemonDetails.types.map(item => item.type.name).join(',')
 })
@@ -17,6 +21,9 @@ const typeNames = computed(() => {
 function handleShare() {
   const valuesFormated = `${props.pokemonDetails.name},w:${props.pokemonDetails.weight},h:${props.pokemonDetails.height},t:${typeNames.value}`
   navigator.clipboard.writeText(valuesFormated)
+}
+function addToFavorites() {
+  emit('addToFavorites', props.pokemonDetails)
 }
 </script>
 <template>
@@ -73,6 +80,7 @@ function handleShare() {
                 cursor-pointer
               "
               :active="pokemonDetails.isFavorite"
+              @click="addToFavorites"
             />
           </div>
         </section>

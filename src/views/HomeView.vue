@@ -47,6 +47,7 @@ async function handleSearch() {
     showErrorMessage.value = true
   } finally {
       searchLoading.value = false
+      updatePokemonListWithFavorites()
   }
 }
 function resetSearch() {
@@ -83,7 +84,15 @@ function handleCloseModal() {
   pokemonSelected.value = {}
 }
 function handleFavorite(details: object) {
+  pokemonSelected.value.isFavorite = !pokemonSelected.value.isFavorite
   mainStore.setFavoritePokemon(details)
+  updatePokemonListWithFavorites()
+}
+function updatePokemonListWithFavorites() {
+  pokemonList.value = pokemonList.value.map(item => {
+    const isFavorite = mainStore.favoritePokemon.some(fav => fav.name === item.name)
+    return { ...item, isFavorite }
+  })
 }
 
 const debounceSearch = debounce(handleSearch, 500)
@@ -102,7 +111,8 @@ const debounceSearch = debounce(handleSearch, 500)
           v-model="searchText"
           type="text"
           placeholder="Search"
-          class="h-[50px] bg-white font-montserrat pl-12 w-full font-medium rounded-[5px] shadow-[0px_2px_10px_0px_#0000000A] placeholder:text-faded-color"
+          class="h-[50px] bg-white font-montserrat pl-12 w-full font-medium rounded-[5px] shadow-[0px_2px_10px_0px_#0000000A] placeholder:text-faded-color focus:outline-blue-300"
+
           @keyup="debounceSearch"
         />
       </section>
@@ -142,6 +152,7 @@ const debounceSearch = debounce(handleSearch, 500)
         :is-visible="mainStore.modalVisble"
         :pokemon-details="pokemonSelected"
         :close-func="handleCloseModal"
+        @add-to-favorites="handleFavorite"
       />
     </div>
     <div class="w-1/12"/>
