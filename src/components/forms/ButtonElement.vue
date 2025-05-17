@@ -16,7 +16,7 @@
       cursor-pointer
     "
     :class="{
-      'bg-primary-button': isActive,
+      'bg-primary-button active:bg-pressed-button': isActive,
       'bg-disabled-button': !isActive
     }"
     @click="clickFunc"
