@@ -68,8 +68,11 @@ function handleShare() {
               Share to my friends
             </ButtonElement>
             <IconFavorite
-              :active="false"
-              class="self-center"
+              class="
+                self-center
+                cursor-pointer
+              "
+              :active="pokemonDetails.isFavorite"
             />
           </div>
         </section>

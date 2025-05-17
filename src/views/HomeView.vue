@@ -54,16 +54,21 @@ function resetSearch() {
   handleSearch()
 }
 async function handleSelectPokemon(details: object) {
-  console.log('Selected Pokemon:', details)
-  console.log('keys:', Object.keys(details).length)
+  const favoriteFlag = mainStore.favoritePokemon.some(item => item.name === details.name)
 
-  if (Object.keys(details).length > 2) {
-    pokemonSelected.value = details
+  if (Object.keys(details).length > 3) {
+    pokemonSelected.value = {
+      ...details,
+      isFavorite: favoriteFlag,
+    }
     mainStore.setModalVisible()
   } else {
     try {
       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
-      pokemonSelected.value = res.data
+      pokemonSelected.value = {
+        ...res.data,
+        isFavorite: favoriteFlag,
+      }
     } catch (err) {
       console.error(err)
       showErrorMessage.value = true
