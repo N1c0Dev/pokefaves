@@ -133,8 +133,8 @@ const debounceSearch = debounce(handleSearch, 500)
 <template>
   <LoadingScreen class="h-screen" :is-visible="mountedLoading" />
   <section v-if="!mountedLoading" class="flex">
-    <div class="w-1/12" />
-    <div class="w-10/12 mt-10">
+    <div class="w-2/12 lg:w-3/12" />
+    <div class="w-8/12 mt-10 lg:w-6/12">
       <section class="relative mb-4">
         <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
           <img src="@/assets/images/magnifier.svg" alt="">
@@ -179,28 +179,32 @@ const debounceSearch = debounce(handleSearch, 500)
         @add-to-favorites="handleFavorite"
       />
     </div>
-    <div class="w-1/12" />
+    <div class="w-2/12 lg:w-3/12" />
   </section>
 
   <footer
     v-if="!mountedLoading"
-    class="flex justify-center shadow-[0px_-5px_4px_0px_#0000000D] bg-white p-4 gap-4 fixed bottom-0 left-0 right-0"
+    class="flex justify-center shadow-[0px_-5px_4px_0px_#0000000D] bg-white p-4 fixed bottom-0 left-0 right-0"
   >
-    <ButtonElement
-      class="h-11 w-[150px] mt-4 font-bold flex justify-center gap-3"
-      :is-active="!showFavorites"
-      :clickFunc="() => { showFavorites = false }"
-    >
-      <img class="self-center" src="@/assets/images/list-icon.svg" alt="">
-      <p class="self-center">All</p>
-    </ButtonElement>
-    <ButtonElement
-      class="h-11 w-[150px] mt-4 font-bold flex justify-center gap-3"
-      :is-active="showFavorites"
-      :clickFunc="() => { showFavorites = true }"
-    >
-      <img class="self-center" src="@/assets/images/star-icon.svg" alt="">
-      <p class="self-center">Favorites</p>
-    </ButtonElement>
+    <div class="w-2/12 lg:w-3/12" />
+    <section class="flex w-8/12 gap-4 lg:w-6/12">
+      <ButtonElement
+        class="h-11 w-1/2 mt-4 font-bold flex justify-center gap-3"
+        :is-active="!showFavorites"
+        :clickFunc="() => { showFavorites = false }"
+      >
+        <img class="self-center" src="@/assets/images/list-icon.svg" alt="">
+        <p class="self-center">All</p>
+      </ButtonElement>
+      <ButtonElement
+        class="h-11 w-1/2 mt-4 font-bold flex justify-center gap-3"
+        :is-active="showFavorites"
+        :clickFunc="() => { showFavorites = true }"
+      >
+        <img class="self-center" src="@/assets/images/star-icon.svg" alt="">
+        <p class="self-center">Favorites</p>
+      </ButtonElement>
+    </section>
+    <div class="w-2/12 lg:w-3/12" />
   </footer>
 </template>
