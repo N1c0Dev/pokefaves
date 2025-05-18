@@ -87,7 +87,7 @@ export function usePokemonList() {
 
     let finalDetails = details
     if (Object.keys(details).length <= 3) {
-      const data = await safe(() => fetchPokemonDetail(details.name), { loading: false })
+      const data = await safe(() => fetchPokemonDetail(details.name))
       if (data) finalDetails = data
     }
 
