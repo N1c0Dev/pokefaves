@@ -49,7 +49,8 @@ import ButtonElement from '@/components/forms/ButtonElement.vue'
             py-[11px]
             px-5
           "
-          :clickFunc="() => {}"
+          id-tag="welcome-button"
+          :click-func="() => {}"
         >
           Get started
         </ButtonElement>

@@ -68,6 +68,7 @@ const debounceSearch = debounce(handleSearch, 500)
         </div>
         <input
           v-model="searchText"
+          id="search-input"
           type="text"
           placeholder="Search"
           class="
@@ -200,6 +201,7 @@ const debounceSearch = debounce(handleSearch, 500)
           justify-center
           gap-3
         "
+        id-tag="list-all-button"
         :is-active="!showFavorites"
         :clickFunc="() => { showFavorites = false }"
       >
@@ -220,6 +222,7 @@ const debounceSearch = debounce(handleSearch, 500)
           justify-center
           gap-3
         "
+        id-tag="favorite-button"
         :is-active="showFavorites"
         :clickFunc="() => { showFavorites = true }"
       >
