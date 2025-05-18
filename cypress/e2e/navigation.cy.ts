@@ -5,7 +5,7 @@ describe('Browse all views', () => {
 
   it('visits welcome view and navigates forward', () => {
     cy.visit('/')
-    cy.get('img').should('have.attr', 'src', '/src/assets/images/pikachu.svg')
+    cy.get('img').should('have.attr', 'alt', 'Pikachu waving')
     cy.contains('h1', 'Welcome to the Pokedex')
     cy.contains('p', 'The digital encyclopedia created by Professor Oak is an invaluable tool to Trainers in the Pokémon world.')
     cy.get('#welcome-button').click()
