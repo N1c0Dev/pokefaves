@@ -2,6 +2,7 @@
   withDefaults(defineProps<{
     clickFunc: (event: MouseEvent) => void
     isActive?: boolean
+    idTag?: string
   }>(), {
     isActive: true
   })
@@ -15,6 +16,7 @@
       rounded-full
       cursor-pointer
     "
+    :id="idTag"
     :class="{
       'bg-primary-button active:bg-pressed-button': isActive,
       'bg-disabled-button': !isActive

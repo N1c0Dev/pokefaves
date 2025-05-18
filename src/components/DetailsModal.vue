@@ -64,6 +64,7 @@ function addToFavorites() {
           "
           >
           <img
+            id="close-modal"
             class="
               absolute
               top-4
@@ -215,6 +216,7 @@ function addToFavorites() {
         </section>
         <section class="px-6">
           <div
+            id="details-actions-container"
             class="
               flex
               justify-between
@@ -223,6 +225,7 @@ function addToFavorites() {
           >
             <ButtonElement
               class="font-bold"
+              id-tag="details-favorite-button"
               :clickFunc="handleShare"
             >
               Share to my friends

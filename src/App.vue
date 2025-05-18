@@ -1,8 +1,9 @@
 <script setup lang="ts">
+const dev = import.meta.env.DEV;
 </script>
 
 <template>
-  <main class="debug-screens">
+  <main :class="[dev ? 'debug-screens' : '']">
     <RouterView />
   </main>
 </template>
