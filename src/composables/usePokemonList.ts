@@ -19,7 +19,7 @@ export function usePokemonList() {
   const searchText = ref('')
   const isFetchingMore = ref(false)
 
-  async function safe<T>(fn: () => Promise<T>, opts?: { loading?: typeof ref<boolean> }): Promise<T | null> {
+  async function safeAsyncCall<T>(fn: () => Promise<T>, opts?: { loading?: typeof ref<boolean> }): Promise<T | null> {
     if (opts?.loading) opts.loading.value = true
     showErrorMessage.value = false
     try {
@@ -34,7 +34,7 @@ export function usePokemonList() {
   }
 
   const fetchInitialData = async () => {
-    const data = await safe(() => fetchPokemonList(), { loading: mountedLoading })
+    const data = await safeAsyncCall(() => fetchPokemonList(), { loading: mountedLoading })
     if (data) {
       pokemonList.value = data.results
       currentPagination.value = data.next
@@ -50,7 +50,7 @@ export function usePokemonList() {
     if (!currentPagination.value || isFetchingMore.value) return
     isFetchingMore.value = true
 
-    const data = await safe(() => fetchPokemonList(currentPagination.value))
+    const data = await safeAsyncCall(() => fetchPokemonList(currentPagination.value))
     if (data) {
       pokemonList.value.push(...data.results)
       currentPagination.value = data.next
@@ -66,7 +66,7 @@ export function usePokemonList() {
       return
     }
 
-    const result = await safe(() => fetchPokemonDetail(searchText.value.toLowerCase()), {
+    const result = await safeAsyncCall(() => fetchPokemonDetail(searchText.value.toLowerCase()), {
       loading: searchLoading,
     })
 
@@ -87,7 +87,7 @@ export function usePokemonList() {
 
     let finalDetails = details
     if (Object.keys(details).length <= 3) {
-      const data = await safe(() => fetchPokemonDetail(details.name))
+      const data = await safeAsyncCall(() => fetchPokemonDetail(details.name))
       if (data) finalDetails = data
     }
 
