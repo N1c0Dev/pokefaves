@@ -10,6 +10,7 @@ defineProps<{
 <template>
   <section
     v-if="isVisible"
+    id="error-container"
     class="
       flex
       flex-col
@@ -44,6 +45,7 @@ defineProps<{
         py-[11px]
         px-5
       "
+      id-tag="back-home-button"
       :clickFunc="resetFunc"
     >
       Go back home
