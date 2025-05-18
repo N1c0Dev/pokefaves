@@ -1,61 +1,60 @@
-# pokefaves
+# ⚡ Pokefaves
 
-This template should help get you started developing with Vue 3 in Vite.
+**Pokefaves** is a Vue 3 web app that lets you **browse, save, and share** your favorite Pokémon from all generations.
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Tech Stack
 
-## Type Support for `.vue` Imports in TS
+- **[Vue 3](https://vuejs.org/)** + **[Vite](https://vitejs.dev/)** – Frontend framework and build tool
+- **[Tailwind CSS](https://tailwindcss.com/)** – CSS framework for custom styling and animations
+- **[Axios](https://axios-http.com/)** – HTTP client for fetching data from PokéAPI
+- **[Vitest](https://vitest.dev/)** – Unit testing
+- **[Cypress](https://www.cypress.io/)** – End-to-end testing
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+---
 
 ## Project Setup
 
-```sh
+### Install Dependencies
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+---
 
-```sh
-npm run dev
-```
+### Run the app
 
-### Type-Check, Compile and Minify for Production
+Build and preview the production app locally:
 
-```sh
+```bash
 npm run build
+npm run preview
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+---
 
-```sh
+### Run Unit Tests
+
+```bash
 npm run test:unit
 ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+---
 
-```sh
-npm run test:e2e:dev
-```
+### Run E2E Tests
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+#### Headless mode (recommended for production):
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
+```bash
 npm run build
 npm run test:e2e
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+#### Interactive mode (for development):
 
-```sh
-npm run lint
+```bash
+npm run test:e2e:dev
 ```
+
