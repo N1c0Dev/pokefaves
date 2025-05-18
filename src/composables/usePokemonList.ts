@@ -34,7 +34,7 @@ export function usePokemonList() {
   }
 
   const fetchInitialData = async () => {
-    const data = await safeAsyncCall(() => fetchPokemonList(), { loading: mountedLoading })
+    const data = await safeAsyncCall(() => fetchPokemonList())
     if (data) {
       pokemonList.value = data.results
       currentPagination.value = data.next
